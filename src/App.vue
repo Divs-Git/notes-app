@@ -111,7 +111,6 @@ header button {
 .card {
   width: 225px;
   height: 225px;
-  background-color: rgb(237, 182, 44);
   padding: 12px;
   border-radius: 15px;
   display: flex;
