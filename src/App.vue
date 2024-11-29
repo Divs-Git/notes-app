@@ -2,8 +2,16 @@
   <main>
     <div v-if="showModal" class="overlay">
       <div class="modal">
-        <textarea name="note" id="note" cols="30" rows="10"></textarea>
-        <button class="add">Add Note</button>
+        <textarea
+          name="note"
+          id="note"
+          cols="30"
+          rows="10"
+          placeholder="Enter your note"
+          v-model.trim="newNote"
+        ></textarea>
+        <p v-if="errorMessage">{{ errorMessage }}</p>
+        <button class="add" @click="handleAddNote">Add Note</button>
         <button class="close" @click="showModal = false">Close</button>
       </div>
     </div>
@@ -13,19 +21,16 @@
         <button @click="showModal = true">+</button>
       </header>
       <div class="cards-container">
-        <div class="card">
+        <div
+          v-for="note in notes"
+          :key="note.id"
+          class="card"
+          :style="{ backgroundColor: note.bgColor }"
+        >
           <p class="main-text">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae
-            debitis, nam mollitia voluptates ducimus et cum!
+            {{ note.text }}
           </p>
-          <p class="date">29/11/2024</p>
-        </div>
-        <div class="card">
-          <p class="main-text">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae
-            debitis, nam mollitia voluptates ducimus et cum!
-          </p>
-          <p class="date">29/11/2024</p>
+          <p class="date">{{ note.date.toLocaleDateString('en-IN') }}</p>
         </div>
       </div>
     </div>
@@ -36,9 +41,33 @@
 import { ref } from 'vue'
 
 const showModal = ref(false)
+const newNote = ref('')
+const notes = ref([])
+const errorMessage = ref('')
+
+function getRandomColor() {
+  return 'hsl(' + Math.random() * 360 + ', 100%, 75%)'
+}
+
+const handleAddNote = () => {
+  if (newNote.value.length >= 10) {
+    notes.value.push({
+      id: Math.floor(Math.random(100000000)),
+      text: newNote.value,
+      date: new Date(),
+      bgColor: getRandomColor(),
+    })
+    showModal.value = false
+    newNote.value = ''
+    errorMessage.value = ''
+  } else {
+    errorMessage.value = 'Notes need to be 10 characters more'
+    return
+  }
+}
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 main {
   height: 100vh;
   width: 100vw;
@@ -83,7 +112,7 @@ header button {
   width: 225px;
   height: 225px;
   background-color: rgb(237, 182, 44);
-  padding: 20px;
+  padding: 12px;
   border-radius: 15px;
   display: flex;
   flex-direction: column;
@@ -149,5 +178,9 @@ header button {
       }
     }
   }
+}
+
+.modal p {
+  color: color.adjust($danger-color, $lightness: -10%);
 }
 </style>

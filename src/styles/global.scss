@@ -3,6 +3,7 @@ $primary-color: #4c8bf5;
 $danger-color: #d9534f;
 $dark-color: #151414;
 $bg-gray-color: #f5f5f5;
+$dark-blue-color: #001f3f;
 
 @debug color.adjust($primary-color, $lightness: -10%);
 @debug color.adjust($danger-color, $lightness: -10%);
@@ -14,9 +15,10 @@ $bg-gray-color: #f5f5f5;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Roboto', sans-serif;
 }
 
 body {
   background-color: $bg-gray-color;
+  font-family: 'Roboto', sans-serif;
+  color: $dark-blue-color;
 }
